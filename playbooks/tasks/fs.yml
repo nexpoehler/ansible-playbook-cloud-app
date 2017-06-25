@@ -1,0 +1,10 @@
+---
+
+- include: user.yml
+  when: mode == "pre"
+
+- name: Define nfs export host data
+  set_fact: nfs_export_hosts="{{ nfs_export_hosts | default([]) + [ dict(name=item, options=["rw", "sync", "no_root_squash"]) ] }}"
+  with_items: "{{ web_backnet_addrs + fpm_backnet_addrs }}"
+  when: mode == "pre"
+  run_once: true

@@ -1,0 +1,16 @@
+---
+
+- name: Reformat external Dicts For HAProxy
+  set_fact:
+    haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item,ip=item,port=varnish_port,params=[]) ] }}"
+  with_items: "{{ lb_varnish_backnet_addrs }}"
+  when: mode == "pre"
+  run_once: true
+
+- name: Allow Haproxy To Bind On Port haproxy stats port
+  seport:
+    ports="{{ haproxy_stats_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  when: mode == "pre"

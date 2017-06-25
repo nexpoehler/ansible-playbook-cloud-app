@@ -1,0 +1,70 @@
+---
+
+## App Base Vars
+nex_app_unix_user: "user"
+nex_app_unix_group: "user"
+nex_app_unix_uid: 5555
+nex_app_unix_gid: 5555
+nex_app_unix_home: "/home/{{ nex_app_unix_user }}"
+nex_app_root: "{{ nex_app_unix_home }}/app"
+nex_app_relative_docroot: "public_html"
+nex_app_doc_root: "{{ nex_app_root }}/{{ nex_app_relative_docroot }}"
+nex_app_log_root: "{{ nex_app_root }}/log"
+nex_app_unix_shell: "/bin/bash"
+
+nex_app_db_user: "dbuser"
+nex_app_db_name: "magento2"
+nex_app_db_pass: "please/override/me"
+
+## nfs vars
+nfs_shared_path: "/shared"
+
+## varnish vars
+varnish_port: 8080
+
+## http vars
+http_port: 80
+https_port: 443
+
+## web vars
+web_port: 8081
+
+## FPM Vars
+php_fpm_port: 9000
+
+## Redis Vars
+redis_port: 6379
+
+## HAProxy Base Vars
+haproxy_global:
+  log:
+    - address: "/dev/log"
+      facility: "local0"
+      level: "info"
+  stats:
+    socket: "/var/lib/haproxy/stats mode 600 level admin"
+  user: "haproxy"
+  group: "haproxy"
+  chroot: "/var/lib/haproxy"
+  daemon: true
+  maxconn: 200000
+
+haproxy_defaults:
+  timeout:
+      - param: 'connect'
+        value: '5s'
+      - param: 'client'
+        value: '15s'
+      - param: 'server'
+        value: '60s'
+      - param: 'check'
+        value: '5s'
+      - param: 'http-request'
+        value: '5s'
+      - param: 'client-fin'
+        value: '5s'
+  options:
+    - "redispatch"
+    - "httpchk"
+
+haproxy_stats_port: 9999

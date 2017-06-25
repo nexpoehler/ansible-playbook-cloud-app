@@ -1,0 +1,42 @@
+---
+
+server_role: "fs"
+
+nfs_exported_directories:
+  - path: "{{ nfs_shared_path }}"
+    hosts: "{{ nfs_export_hosts }}"
+
+nfs_LOCKD_TCPPORT:       32803
+nfs_LOCKD_UDPPORT:       32769
+nfs_MOUNTD_PORT:         892
+nfs_RQUOTAD_PORT:        875
+nfs_STATD_PORT:          662
+nfs_STATD_OUTGOING_PORT: 2020
+
+nfs_ports:
+  - {name: LOCKD_TCPPORT,       value: "{{ nfs_LOCKD_TCPPORT }}" }
+  - {name: LOCKD_UDPPORT,       value: "{{ nfs_LOCKD_UDPPORT }}" }
+  - {name: MOUNTD_PORT,         value: "{{ nfs_MOUNTD_PORT }}" }
+  - {name: RQUOTAD_PORT,        value: "{{ nfs_RQUOTAD_PORT }}" }
+  - {name: STATD_PORT,          value: "{{ nfs_STATD_PORT }}" }
+  - {name: STATD_OUTGOING_PORT, value: "{{ nfs_STATD_OUTGOING_PORT }}" }
+
+firewall_v4_group_rules:
+  401 allow portmap ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport 111 -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport 111 -j ACCEPT"
+  402 allow nfs daemon ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport 2049 -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport 2049 -j ACCEPT"
+  403 allow nfs mountd ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport {{ nfs_MOUNTD_PORT }} -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport {{ nfs_MOUNTD_PORT }} -j ACCEPT"
+  404 allow nfs status ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport {{ nfs_STATD_PORT }} -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport {{ nfs_STATD_PORT }} -j ACCEPT"
+  405 allow nfs lock manager ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport {{ nfs_LOCKD_TCPPORT }} -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport {{ nfs_LOCKD_UDPPORT }} -j ACCEPT"
+  406 allow nfs rquotad ports:
+    - "-A INPUT -m state --state NEW -p tcp --dport {{ nfs_RQUOTAD_PORT }} -j ACCEPT"
+    - "-A INPUT -m state --state NEW -p udp --dport {{ nfs_RQUOTAD_PORT }} -j ACCEPT"

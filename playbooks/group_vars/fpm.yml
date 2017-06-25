@@ -1,0 +1,22 @@
+---
+
+server_role: "fpm"
+
+php_fpm_enabled: true
+php_fpm_pools:
+  - name: "{{ nex_project }}"
+    user: "{{ nex_app_unix_user }}"
+    group: "{{ nex_app_unix_user }}"
+    config:
+      max_children: "{{ nex_php_max_children|default(32) }}"
+      start_servers: "{{ nex_php_start_servers|default(8) }}"
+      min_spare_servers: "{{ nex_php_min_spare_servers|default(8) }}"
+      max_spare_servers: "{{ nex_php_max_spare_servers|default(16) }}"
+      max_requests: "{{ nex_php_max_requests|default(10240) }}"
+      process_idle_timeout: "{{ nex_php_process_idle_timeout|default('60s') }}"
+      error_log: "{{ nex_app_log_root }}/php-fpm.log"
+      slow_log: "{{ nex_app_log_root }}/php-fpm.slow.log"
+
+firewall_v4_group_rules:
+  401 allow backnet fpm traffic:
+    - "-A INPUT -p tcp --dport {{ php_fpm_port }} -j ACCEPT -s {{ lb_fpm_backnet_addrs | join(',') }} -d {{ backnet_addr }}"

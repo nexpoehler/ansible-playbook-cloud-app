@@ -1,0 +1,22 @@
+---
+
+server_role: "lb-varnish"
+
+## HAProxy Vars
+haproxy_frontends:
+  - name: "fe-varnish"
+    mode: "tcp"
+    bind:
+      - "{{ backnet_addr }}:{{ varnish_port }}"
+    default_backend: "be-varnish"
+    maxconn: "{{ haproxy_global.maxconn }}"
+
+haproxy_backends:
+  - name: "be-varnish"
+    mode: "tcp"
+    servers: "{{ haproxy_varnish_servers }}"
+
+## Firewall
+firewall_v4_group_rules:
+  401 allow backnet web -> lb_varnish traffic:
+    - "-A INPUT -p tcp --dport {{ varnish_port }} -j ACCEPT -s {{ lb_external_backnet_addrs | join(',') }} -d {{ backnet_addr }}"

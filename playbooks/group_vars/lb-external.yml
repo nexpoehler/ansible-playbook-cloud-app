@@ -1,0 +1,117 @@
+---
+
+server_role: "lb-external"
+
+ssl_crt: |
+  -----BEGIN CERTIFICATE-----
+  MIIDtjCCAp4CCQDDmN1omiEJsTANBgkqhkiG9w0BAQsFADCBnDELMAkGA1UEBhMC
+  VVMxETAPBgNVBAgTCE1pY2hpZ2FuMRMwEQYDVQQHEwpTb3V0aGZpZWxkMRgwFgYD
+  VQQKEw9OZXhjZXNzLm5ldCBMTEMxDDAKBgNVBAsTA05PQzEYMBYGA1UEAxMPd3d3
+  LmV4YW1wbGUuY29tMSMwIQYJKoZIhvcNAQkBFhRzc2xhZG1pbkBuZXhjZXNzLm5l
+  dDAeFw0xNzA0MDIyMjAxNDRaFw0xODA0MDIyMjAxNDRaMIGcMQswCQYDVQQGEwJV
+  UzERMA8GA1UECBMITWljaGlnYW4xEzARBgNVBAcTClNvdXRoZmllbGQxGDAWBgNV
+  BAoTD05leGNlc3MubmV0IExMQzEMMAoGA1UECxMDTk9DMRgwFgYDVQQDEw93d3cu
+  ZXhhbXBsZS5jb20xIzAhBgkqhkiG9w0BCQEWFHNzbGFkbWluQG5leGNlc3MubmV0
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsPEOG/iDue+14JDzmCdG
+  kmu0qxWoLFHIoGLONaWrIJ/29bbdXShlP7X2e8h/pxMzno4XX25Ypx851xYUQyAX
+  vMp2uWikNZZEms5wTKXmENsDshnYkEkn6HIR9nNB5qEhAvqEHk03ril3kR0oQ4Sc
+  i5CZOpGSPllzhgGfAzJU/WZ5mCh1/HsTXGfMYcdlcHE0xBEOguhdWCOtNVZnHxFo
+  a216AKBQ4CxYNzSoL3sVN8MddH49B4/0QFQ/6sm9qlT+IZzyx94dEoqnSHIGoKkA
+  E4EFn5AsKW+sonDAyZHnKjqmKKx4EcbkfOIjQpEzQzz/tODQ5t4Y1Di0UGxLq8o5
+  XwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA3xTkUeG1JIvWCHVy7g8crQlGglKGX
+  peuQ7bUJUVaDHBuHO1GHdu3BPKp+xNTKvRY0/2q8pQCZhUmXzczIAiqC9cOHoqej
+  +gb3V74xx0cqZ+z8J4APsV04wYd95CalQqTjKlEdxpNX+OG/ymIEq+qzacmRajLz
+  ctw0tDRWws6EkMbA3CCuJY5C6MXYvRcVDHiHkel4gibN+/kx7sI2AGzKGmbVyH7L
+  E8k6FhqDqzTisyUH0/E7dG0ZZCPi5eOH+QIflbZ2IoCTYT6Anm9LOJkS7UyqPEni
+  mtARnToXDNVzztolxiXxD1rAicY/NmbzyG5TSTn5LjBiqeVPxvqdXHto
+  -----END CERTIFICATE-----
+
+ssl_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEowIBAAKCAQEAsPEOG/iDue+14JDzmCdGkmu0qxWoLFHIoGLONaWrIJ/29bbd
+  XShlP7X2e8h/pxMzno4XX25Ypx851xYUQyAXvMp2uWikNZZEms5wTKXmENsDshnY
+  kEkn6HIR9nNB5qEhAvqEHk03ril3kR0oQ4Sci5CZOpGSPllzhgGfAzJU/WZ5mCh1
+  /HsTXGfMYcdlcHE0xBEOguhdWCOtNVZnHxFoa216AKBQ4CxYNzSoL3sVN8MddH49
+  B4/0QFQ/6sm9qlT+IZzyx94dEoqnSHIGoKkAE4EFn5AsKW+sonDAyZHnKjqmKKx4
+  EcbkfOIjQpEzQzz/tODQ5t4Y1Di0UGxLq8o5XwIDAQABAoIBABfsb8juX/ka5Q94
+  6cavwMX5VBMxuWxMnoC4+0KbpLijiEOOtv1qgc4Mb0grQr83RGpyscxQYiIugaaI
+  MLMmuq7m/QhykolASQRZVyu13pZ21lgVUIeprICsM6uLx+RD8u+xKX3jWNzudGEl
+  fRUr7/Ka2Wzm08wkUg9TVsma24zrPWx+aQJNoC4dN7WozOL5allOssU4wr86euD7
+  2OtJcsozHFGwpPfSVWqzjO/PcpauyF/y1Me8yfWi8Um/uMFhDowtvlivW5W4Ny9L
+  uzpptKiFSY/Ey7Qs0o/CpxTCQyTUxxcdzNpxXudtj1vT4xxEQL7ALWaVduFeS6k7
+  iJX08NkCgYEA4bj5WzyHFiCe2tNqKA55aykdpeYfnbzsYyMW7RcxmTKoapoxnsmB
+  e8QQv0oUMgqt6ppNFaJvzaQ17o1UcBRLyvTkqpa++Nt9QJYte0XADrE1/QNyyKq+
+  Nz9n8py2WNqwGTFydqZp0lEYBwib5C9PN4887Mq8oFnfpahua+7yK1sCgYEAyK0B
+  eL1G3Mv+284VDh/FTmUKHUv9lyF+Pd20KzaUbnom9J/PbnEsUC9G74fQYm+FQ4es
+  o+0Y79mK8ubN1pyKsJxueulWQcv9SG7eSQSdkK4wvaMRLuLIuR5a6stBT8J/1aD2
+  WDMqLz2ozjXgp2Rg9+6bEzVik6PUa2FDA7ijvU0CgYEAj+fT4dzm6q6FWFFs3njL
+  5AvkgP4DrhbiRhn65dDhqB/py3zeobMqP/OyEaJy2ayBUI5rEp3q1ZoZYCruaD4o
+  TA5xMmjE+/dDFUgpWuwPE87a8qGeLlzcxHBCHyTWBDP4DTe/F/HkiVd2EBXm/UVE
+  JdHGL9jZBQoHUZ/eNiWycv0CgYADsVtTk3gYXBCmjtZIWkFRPf6/p0RVYaJnFQtZ
+  uDlnBwxsd/xjNeXw283cXo1xIkg7g+WjZpuM3l32NlUXW+4ZbeeCj4Ss1Uol6RRi
+  F5mmre3rr3KDgFzdOzfFFlRvWU7s6XdfDCH8mI/gq5Ekw24dYeCsq9DSkrM3/qQz
+  D1TECQKBgGMRD6mejxln0wk+zdQLVra0b1L9sXxfmPKq5thl6tb1JtIF9ypkZr02
+  Z8I/zeXQ8gE5R5y582vC8Ifv4TrWE5G/ftIoHiccp0YKt6Y6I/hN71vHHM2Q/f3M
+  g7rzResu++GGJRJHFeSXuQjy1Htm/im0DyWeSqs9Ad08bjO/Vduk
+  -----END RSA PRIVATE KEY-----
+
+## HAProxy Vars
+haproxy_global:
+  log:
+    - address: "/dev/log"
+      facility: "local0"
+      level: "info"
+  stats:
+    socket: "/var/lib/haproxy/stats mode 600 level admin"
+  ssl_default_bind_options: "{{ ssl_options }}"
+  ssl_default_bind_ciphers: "{{ ssl_ciphers }}"
+  tune:
+    ssl:
+      default-dh-param: 4096
+  user: "haproxy"
+  group: "haproxy"
+  chroot: "/var/lib/haproxy"
+  daemon: true
+  maxconn: 200000
+
+haproxy_frontends:
+  - name: "fe-ext-http"
+    mode: "http"
+    bind:
+      - "{{ frontnet_addr }}:{{ http_port }}"
+    reqadd:
+      - "X-Forwarded-Proto:\\ http"
+    default_backend: "be-ext"
+  - name: "fe-ext-https"
+    mode: "http"
+    bind:
+      - "{{ frontnet_addr }}:{{ https_port }} ssl crt {{ ssl_pem_file }}"
+    reqadd:
+      - "X-Forwarded-Proto:\\ https"
+    default_backend: "be-ext"
+
+haproxy_backends:
+  - name: "be-ext"
+    mode: "http"
+    servers: "{{ haproxy_external_servers }}"
+    options:
+      - forwardfor
+
+## Tweak sysctl so we can forward too
+server_extra_sysctl:
+  - key: "net.ipv4.ip_forward"
+    value: "1"
+
+## Firewall
+firewall_v4_group_rules:
+  401 allow frontnet https traffic:
+    - "-A INPUT -p tcp --dport {{ https_port }} -j ACCEPT -s 0.0.0.0/0 -d {{ frontnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ http_port }} -j ACCEPT -s 0.0.0.0/0 -d {{ frontnet_addr }}"
+  402 allow local stats traffic:
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s 127.0.0.1 -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ backnet_addr }} -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ frontnet_addr }} -d {{ backnet_addr }}"
+  999 setup IP masq:
+    - "-A POSTROUTING -t nat -s {{ all_backnet_addrs | join(',') }} -j MASQUERADE"
+    - "-A FORWARD -i {{ eth0 }} -o {{ eth1 }} -m state --state RELATED,ESTABLISHED -j ACCEPT"
+    - "-A FORWARD -i {{ eth1 }} -o {{ eth0 }} -j ACCEPT"

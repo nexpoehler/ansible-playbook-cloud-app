@@ -1,0 +1,28 @@
+---
+
+server_role: "db"
+
+## Settings to get Percona
+mysql_packages:
+  - "Percona-Server-client-56"
+  - "Percona-Server-server-56"
+  - "Percona-Server-shared-56"
+  - "MySQL-python"
+  - "perl-DBD-MySQL"
+mysql_daemon: "mysql"
+mysql_log_error: "/var/log/mysql.log"
+mysql_syslog_tag: "mysql"
+mysql_pid_file: "/var/run/mysql/mysql.pid"
+
+mysql_databases: "{{ nex_app_db_info|default([]) }}"
+
+mysql_users: "{{ nex_app_db_user_info|default([]) }}"
+
+firewall_v4_group_rules:
+  401 allow backnet mysql traffic from PHP servers:
+    - "-A INPUT -p tcp --dport 3306 -j ACCEPT -s {{ fpm_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
+  402 allow backnet mysql traffic from FILESERVER servers:
+    - "-A INPUT -p tcp --dport 3306 -j ACCEPT -s {{ fs_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
+
+## InnoDB Settings
+mysql_innodb_buffer_pool_size: "{{ (ansible_memtotal_mb * 0.7) | int }}M"

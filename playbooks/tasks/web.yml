@@ -1,0 +1,37 @@
+---
+
+- include: user.yml
+  when: mode == "pre"
+
+- name: mount nfs
+  mount:
+    name="/shared"
+    src="{{ fs_backnet_addrs[0] }}:/shared"
+    fstype="nfs"
+    opts="defaults"
+    dump="0"
+    passno="2"
+    state="mounted"
+  when: mode == "post"
+
+- name: Enable SELINUX httpd_use_nfs boolean
+  seboolean:
+    name="httpd_use_nfs"
+    state="yes"
+    persistent="yes"
+  when: mode == "post"
+
+- name: Enable SELINUX httpd_use_nfs boolean
+  seboolean:
+    name="httpd_enable_homedirs"
+    state="yes"
+    persistent="yes"
+  when: mode == "post"
+
+- name: Allow Apache To Bind On Backend Web Port
+  seport:
+    ports="{{ web_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  when: mode == "pre"

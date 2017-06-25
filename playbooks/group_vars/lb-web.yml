@@ -1,0 +1,34 @@
+---
+
+server_role: "lb-web"
+
+## HAProxy Vars
+haproxy_frontends:
+  - name: "fe-web"
+    mode: "http"
+    bind:
+      - "{{ backnet_addr }}:{{ web_port }}"
+    default_backend: "be-web"
+
+haproxy_backends:
+  - name: "be-web"
+    mode: "http"
+    servers: "{{ haproxy_web_servers }}"
+
+## Tweak sysctl so we can forward too
+server_extra_sysctl:
+  - key: "net.ipv4.ip_forward"
+    value: "1"
+
+## Firewall
+firewall_v4_group_rules:
+  401 allow backnet http traffic:
+    - "-A INPUT -p tcp --dport {{ web_port }} -j ACCEPT -s {{ varnish_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
+  402 allow local stats traffic:
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s 127.0.0.1 -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ backnet_addr }} -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ frontnet_addr }} -d {{ backnet_addr }}"
+  999 setup IP masq:
+    - "-A POSTROUTING -t nat -s {{ all_backnet_addrs | join(',') }} -j MASQUERADE"
+    - "-A FORWARD -i {{ eth0 }} -o {{ eth1 }} -m state --state RELATED,ESTABLISHED -j ACCEPT"
+    - "-A FORWARD -i {{ eth1 }} -o {{ eth0 }} -j ACCEPT"

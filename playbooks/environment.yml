@@ -1,0 +1,136 @@
+---
+
+- name: Base Setup
+  hosts: all
+  become: true
+  any_errors_fatal: true
+  pre_tasks:
+    - include: tasks/all.yml mode="pre"
+  roles:
+    - nexcess.server
+    - { role: nexcess.puppet, when: "nex_env_target != 'vagrant'" }
+  post_tasks:
+    - include: tasks/all.yml mode="post"
+
+- name: Setup Fileserver
+  hosts: fs
+  become: true
+  pre_tasks:
+    - include: tasks/fs.yml mode="pre"
+  roles:
+    - nexcess.nfs
+    - nexcess.php
+    - nexcess.composer
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/fs.yml mode="post"
+
+- name: Setup Web Servers
+  hosts: web
+  become: true
+  pre_tasks:
+    - include: tasks/web.yml mode="pre"
+  roles:
+    - nexcess.apache
+    - nexcess.nfs
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/web.yml mode="post"
+
+- name: Setup FPM Servers
+  hosts: fpm
+  become: true
+  pre_tasks:
+    - include: tasks/fpm.yml mode="pre"
+  roles:
+    - nexcess.php
+    - nexcess.composer
+    - nexcess.nfs
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/fpm.yml mode="post"
+
+- name: Setup DB
+  hosts: db
+  become: true
+  pre_tasks:
+    - include: tasks/db.yml mode="pre"
+  roles:
+    - nexcess.repo-percona
+    - nexcess.mysql
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/db.yml mode="post"
+
+- name: Setup Web Load Balancer
+  hosts: lb-web
+  become: true
+  pre_tasks:
+    - include: tasks/lb-web.yml mode="pre"
+  roles:
+    - nexcess.haproxy
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/lb-web.yml mode="post"
+
+- name: Setup FPM Load Balancer
+  hosts: lb-fpm
+  become: true
+  pre_tasks:
+    - include: tasks/lb-fpm.yml mode="pre"
+  roles:
+    - nexcess.haproxy
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/lb-fpm.yml mode="post"
+
+- name: Setup Redis
+  hosts: redis
+  become: true
+  roles:
+    - nexcess.redis
+    - { role: "{{ nex_app }}", mode: "env" }
+
+- name: Setup Redis Load Balancer
+  hosts: lb-redis
+  become: true
+  pre_tasks:
+    - include: tasks/lb-redis.yml mode="pre"
+  roles:
+    - nexcess.haproxy
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/lb-redis.yml mode="post"
+
+- name: Setup Varnish
+  hosts: varnish
+  become: true
+  pre_tasks:
+    - include: tasks/varnish.yml mode="pre"
+  roles:
+    - nexcess.varnish
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/varnish.yml mode="post"
+
+- name: Setup Varnish Load Balancer
+  hosts: lb-varnish
+  become: true
+  pre_tasks:
+    - include: tasks/lb-varnish.yml mode="pre"
+  roles:
+    - nexcess.haproxy
+  post_tasks:
+    - include: tasks/lb-varnish.yml mode="post"
+
+- name: Setup External Load Balancer
+  hosts: lb-external
+  become: true
+  pre_tasks:
+    - include: tasks/lb-external.yml mode="pre"
+  roles:
+    - nexcess.ssl-cert
+    - nexcess.haproxy
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/lb-external.yml mode="post"

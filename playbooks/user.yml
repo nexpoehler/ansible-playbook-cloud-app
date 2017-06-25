@@ -1,0 +1,76 @@
+---
+
+- name: Add Group
+  group:
+    name="{{ nex_app_unix_group }}"
+    gid="{{ nex_app_unix_gid }}"
+    state="present"
+
+- name: Add User
+  user:
+    name="{{ nex_app_unix_user }}"
+    uid="{{ nex_app_unix_uid }}"
+    group="{{ nex_app_unix_group }}"
+    home="{{ nex_app_unix_home }}"
+    move_home="yes"
+    shell="{{ nex_app_unix_shell }}"
+    state="present"
+
+- name: Ensure Proper Owner of Home Directory
+  file:
+    path="{{ nex_app_unix_home }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_user }}"
+    mode=2751
+
+- name: Make Sure App Directory Exists
+  file:
+    path="{{ nex_app_root }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="directory"
+    mode=2751
+
+- name: Make Sure Log Directory Exists
+  file:
+    path="{{ nex_app_root }}/log"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="directory"
+    mode=0700
+
+- name: Make Sure Shared Dir Exists
+  file:
+    path="{{ nfs_shared_path }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="directory"
+    mode=2751
+
+- name: Make Sure Shared Domain Dir Exists
+  file:
+    path="{{ nfs_shared_path }}/{{ nex_app_domain }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="directory"
+    mode=2751
+
+- name: Make Sure Shared Domain Relative Docroot Dir Exists
+  file:
+    path="{{ nfs_shared_path }}/{{ nex_app_domain }}/{{ nex_app_relative_docroot }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="directory"
+    mode=2751
+
+- name: Make Sure Html Symlink Exists
+  file:
+    dest="{{ nex_app_doc_root }}"
+    src="{{ nfs_shared_path }}/{{ nex_app_domain }}/{{ nex_app_relative_docroot }}"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+    state="link"
+
+- name: Register the Doc Root for Other Roles
+  set_fact:
+    nex_app_doc_root="{{ nex_app_doc_root }}"

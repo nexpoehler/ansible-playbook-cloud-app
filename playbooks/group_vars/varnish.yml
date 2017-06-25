@@ -1,0 +1,12 @@
+---
+
+server_role: "varnish"
+
+varnish_listen_port: "{{ varnish_port }}"
+varnish_default_backend_host: "{{ lb_web_backnet_addrs[0] }}"
+varnish_default_backend_port: "{{ web_port }}"
+
+## Firewall
+firewall_v4_group_rules:
+  401 allow backnet lb_varnish -> varnish traffic:
+    - "-A INPUT -p tcp --dport {{ varnish_port }} -j ACCEPT -s {{ lb_varnish_backnet_addrs | join(',') }} -d {{ backnet_addr }}"

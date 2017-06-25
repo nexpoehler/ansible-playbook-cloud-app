@@ -1,0 +1,24 @@
+---
+
+- name: Reformat redis Dicts For HAProxy
+  set_fact:
+    haproxy_redis_servers="{{ haproxy_redis_servers | default([]) + [ dict(name=item,ip=item,port=redis_port,params=[]) ] }}"
+  with_items: "{{ redis_backnet_addrs }}"
+  when: mode == "pre"
+  run_once: true
+
+- name: Allow Haproxy To Bind On Port haproxy stats port
+  seport:
+    ports="{{ haproxy_stats_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  when: mode == "pre"
+
+- name: Allow Haproxy To Bind On Redis Port
+  seport:
+    ports="{{ redis_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  when: mode == "pre"

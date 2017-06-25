@@ -1,0 +1,22 @@
+---
+
+server_role: "lb-redis"
+
+## HAProxy Vars
+haproxy_frontends:
+  - name: "fe-redis"
+    mode: "tcp"
+    bind:
+      - "{{ backnet_addr }}:{{ redis_port }}"
+    default_backend: "be-redis"
+    maxconn: "{{ haproxy_global.maxconn }}"
+
+haproxy_backends:
+  - name: "be-redis"
+    mode: "tcp"
+    servers: "{{ haproxy_redis_servers }}"
+
+## Firewall
+firewall_v4_group_rules:
+  401 allow backnet FPM -> redis traffic:
+    - "-A INPUT -p tcp --dport {{ redis_port }} -j ACCEPT -s {{ (fpm_backnet_addrs + fs_backnet_addrs) | join(',') }} -d {{ backnet_addr }}"

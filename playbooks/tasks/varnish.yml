@@ -1,0 +1,8 @@
+---
+
+- name: Enable SELINUX varnishd_connect_any boolean
+  seboolean:
+    name="varnishd_connect_any"
+    state="yes"
+    persistent="yes"
+  when: mode == "post"
