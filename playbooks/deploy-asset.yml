@@ -1,0 +1,12 @@
+---
+
+- name: Deploy asset file
+  hosts: fs
+  become: true
+  any_errors_fatal: true
+  pre_tasks:
+    - include: tasks/all.yml mode="pre"
+  tasks:
+    - include: tasks/asset/deploy.yml
+  post_tasks:
+    - include: tasks/all.yml mode="post"

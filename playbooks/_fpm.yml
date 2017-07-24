@@ -1,0 +1,16 @@
+---
+
+- name: Setup FPM Servers
+  hosts: fpm
+  become: true
+  pre_tasks:
+    - include: tasks/fpm.yml mode="pre"
+  roles:
+    - nexcess.php
+    - nexcess.composer
+    - nexcess.nfs
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/fpm.yml mode="post"
+
+

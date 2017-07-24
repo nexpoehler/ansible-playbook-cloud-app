@@ -1,0 +1,13 @@
+---
+- name: Setup Web Servers
+  hosts: web
+  become: true
+  pre_tasks:
+    - include: tasks/web.yml mode="pre"
+  roles:
+    - nexcess.apache
+    - nexcess.nfs
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/web.yml mode="post"
+

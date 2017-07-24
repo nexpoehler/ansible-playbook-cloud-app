@@ -1,0 +1,9 @@
+---
+
+- name: Setup Redis
+  hosts: redis
+  become: true
+  roles:
+    - nexcess.redis
+    - { role: "{{ nex_app }}", mode: "env" }
+

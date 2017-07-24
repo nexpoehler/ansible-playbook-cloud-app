@@ -1,0 +1,9 @@
+---
+
+- name: Extract asset archive
+  unarchive:
+    src="{{ nex_app_url_asset_archive_file }}"
+    dest="{{ nex_app_root }}/{{ nex_app_asset_archive_base }}"
+    remote_src=true
+  become: yes
+  become_user: "{{ nex_app_unix_user }}"
