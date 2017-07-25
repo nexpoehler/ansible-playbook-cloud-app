@@ -1,0 +1,23 @@
+---
+- name: Setup a temp dir for the sql file
+  tempfile:
+    state="directory"
+    suffix="-sql"
+  register: sql_tempdir
+
+- name: Download sql
+  get_url:
+    url="{{ nex_app_url_sql_file }}"
+    dest="{{ sql_tempdir.path }}"  
+  register: download_result
+
+- name: Import Database
+  mysql_db:
+    name="{{ nex_app_db_name }}"
+    state="import"
+    target="{{ download_result.dest }}"
+
+- name: Delete downloaded SQL
+  file:
+    state="absent"
+    path="{{ sql_tempdir.path }}"

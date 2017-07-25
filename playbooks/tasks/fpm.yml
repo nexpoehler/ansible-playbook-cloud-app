@@ -1,6 +1,6 @@
 ---
 
-- include: user.yml
+- include: tasks/user.yml
   when: mode == "pre"
 
 - name: Make sure php-fpm is started

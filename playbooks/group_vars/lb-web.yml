@@ -23,7 +23,7 @@ server_extra_sysctl:
 ## Firewall
 firewall_v4_group_rules:
   401 allow backnet http traffic:
-    - "-A INPUT -p tcp --dport {{ web_port }} -j ACCEPT -s {{ varnish_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ web_port }} -j ACCEPT -s {{ lb_web_parent_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
   402 allow local stats traffic:
     - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s 127.0.0.1 -d {{ backnet_addr }}"
     - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ backnet_addr }} -d {{ backnet_addr }}"

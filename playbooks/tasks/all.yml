@@ -9,11 +9,27 @@
 - name: Collect All Backnets By Group
   set_fact: {"{{ item | regex_replace('-', '_') }}_backnet_addrs":"{{ groups[item] | map('extract', hostvars, ['backnet_addr']) | list }}"}
   with_items: "{{ groups }}"
+  tags: "base,fs,web,fpm,db,lb-web,lb-fpm,redis,lb-redis,varnish,lb-varnish,lb-external"
   when: mode == "pre"
   run_once: true
 
 - name: Collect All Frontnets By Group
   set_fact: {"{{ item | regex_replace('-', '_') }}_frontnet_addrs":"{{ groups[item] | map('extract', hostvars, ['frontnet_addr']) | list }}"}
   with_items: "{{ groups }}"
+  tags: "base,fs,web,fpm,db,lb-web,lb-fpm,redis,lb-redis,varnish,lb-varnish,lb-external"
   when: mode == "pre"
   run_once: true
+
+- name: Define lb_web_parent_backnet_addrs (with varnish)
+  set_fact: lb_web_parent_backnet_addrs="{{ varnish_backnet_addrs }}"
+  tags: "base,fs,web,fpm,db,lb-web,lb-fpm,redis,lb-redis,varnish,lb-varnish,lb-external"
+  when: 
+    - mode == "pre"
+    - lb_varnish_backnet_addrs is defined
+
+- name: Define lb_web_parent_backnet_addrs (without varnish)
+  set_fact: lb_web_parent_backnet_addrs="{{ lb_external_backnet_addrs }}"
+  tags: "base,fs,web,fpm,db,lb-web,lb-fpm,redis,lb-redis,varnish,lb-varnish,lb-external"
+  when: 
+    - mode == "pre"
+    - lb_varnish_backnet_addrs is not defined

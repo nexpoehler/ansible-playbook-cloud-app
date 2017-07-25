@@ -1,0 +1,14 @@
+---
+
+- name: Setup DB
+  hosts: db
+  become: true
+  pre_tasks:
+    - include: tasks/db.yml mode="pre"
+  roles:
+    - nexcess.repo-percona
+    - nexcess.mysql
+    - { role: "{{ nex_app }}", mode: "env" }
+  post_tasks:
+    - include: tasks/db.yml mode="post"
+

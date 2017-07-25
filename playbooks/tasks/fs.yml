@@ -1,6 +1,6 @@
 ---
 
-- include: user.yml
+- include: tasks/user.yml
   when: mode == "pre"
 
 - name: Define nfs export host data
