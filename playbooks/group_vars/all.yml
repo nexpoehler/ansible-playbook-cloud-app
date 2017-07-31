@@ -12,9 +12,10 @@ nex_app_doc_root: "{{ nex_app_root }}/{{ nex_app_relative_docroot }}"
 nex_app_log_root: "{{ nex_app_root }}/log"
 nex_app_unix_shell: "/bin/bash"
 
-nex_app_db_user: "dbuser"
-nex_app_db_name: "magento2"
-nex_app_db_pass: "please/override/me"
+#override these
+#nex_app_db_user: "dbuser"
+#nex_app_db_name: "magento2"
+#nex_app_db_pass: "please/override/me"
 
 ## nfs vars
 nfs_shared_path: "/shared"
