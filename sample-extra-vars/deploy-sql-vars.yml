@@ -1,0 +1,3 @@
+---
+nex_app_db_name: "magento2"
+nex_app_url_sql_file: https://github.com/nexpoehler/magento2-test/raw/master/tmp/1497505152_db.sql

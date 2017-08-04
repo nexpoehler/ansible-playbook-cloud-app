@@ -3,14 +3,14 @@
 - include: tasks/user.yml
   when: mode == "pre"
 
-- name: Make sure php-fpm is started
+- name: Make Sure php-fpm is Started
   service:
     name="{{ php_prefix }}-php-fpm"
     state="started"
     enabled="yes"
   when: mode == "post"
 
-- name: mount nfs
+- name: Mount NFS Shared
   mount:
     name="/shared"
     src="{{ fs_backnet_addrs[0] }}:/shared"

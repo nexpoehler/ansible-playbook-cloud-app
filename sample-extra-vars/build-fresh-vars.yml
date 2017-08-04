@@ -1,0 +1,18 @@
+---
+
+nex_app: nexcess.magento2
+nex_app_domain: magentocloud.nexcess.net
+
+magento_fresh_install: true
+magento_deploy_sample_data: true
+magento_timezone: America/Detroit
+#magento_admin_pass: "[PASSWORD-GOES-HERE]"
+
+nex_app_db_user: "dbuser"
+nex_app_db_name: "magento2"
+#nex_app_db_pass: "[PASSWORD-GOES-HERE]"
+
+#nex_app_magento_public_key: [MAGENTO-PUBLIC_KEY_GOES_HERE]
+#nex_app_magento_private_key: [MAGENTO_PRIVATE_KEY_GOES_HERE]
+
+

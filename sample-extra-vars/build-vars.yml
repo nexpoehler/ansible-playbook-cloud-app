@@ -1,0 +1,9 @@
+---
+nex_app: nexcess.magento2
+nex_app_git_repo: 'git@github.com:clwells/app-magento2.git'
+nex_app_git_branch: master
+nex_app_db_user: "dbuser"
+nex_app_db_name: "magento2"
+#nex_app_db_pass: "[PASSWORD-GOES-HERE]"
+#nex_app_magento_public_key: [MAGENTO-PUBLIC_KEY_GOES_HERE]
+#nex_app_magento_private_key: [MAGENTO_PRIVATE_KEY_GOES_HERE]

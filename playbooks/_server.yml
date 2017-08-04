@@ -1,0 +1,9 @@
+---
+- name: Server Setup
+  hosts: all
+  become: true
+  any_errors_fatal: true
+  roles:
+    - nexcess.server
+    - { role: nexcess.puppet, when: "nex_env_target is undefined or nex_env_target != 'vagrant'" }
+

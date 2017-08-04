@@ -1,0 +1,79 @@
+---
+
+- block:
+   - name: Give user access to SSH_AUTH_SOCK dir
+     shell: setfacl -m u:{{ nex_app_unix_user }}:x $(dirname $SSH_AUTH_SOCK)
+     become: true
+     become_flags: "-E"
+   
+   - name: Give user access to SSH_AUTH_SOCK
+     shell: setfacl -m u:{{ nex_app_unix_user }}:rwx $SSH_AUTH_SOCK
+     become: true
+     become_flags: "-E"
+   
+   - name: Setup secontext for build base
+     sefcontext:
+       target="{{ nex_app_build_base }}(/.*)?"
+       setype="httpd_sys_content_t"
+       state="present"
+   
+   - name: Define Build ID
+     set_fact:
+       nex_app_build_id="{{ lookup('pipe','date +%Y%m%d%H%M%S.%5N') }}"
+     when:
+       - nex_app_build_id is undefined
+   
+   - name: Set build code base fact
+     set_fact:
+       nex_app_build_code_base="{{ nex_app_build_base }}/{{ nex_app_build_id }}/code"
+   
+   - name: Display Code Base
+     debug:
+       msg="nex_app_build_code_base = {{ nex_app_build_code_base }}"
+   
+   - name: Create build base
+     file: 
+       path="{{ nex_app_build_base }}"
+       state="directory"
+       mode="0711"
+       setype="_default"
+       owner="{{ nex_app_unix_user }}"
+       group="{{ nex_app_unix_group }}"
+   
+   - name: Create build code base
+     file: 
+       path="{{ nex_app_build_code_base }}"
+       state="directory"
+       mode="0711"
+       setype="_default"
+       owner="{{ nex_app_unix_user }}"
+       group="{{ nex_app_unix_group }}"
+   
+   - name: Fix build base context
+     command:
+       restorecon {{ hostvars[groups['fpm'][0]]['nex_app_build_code_base'] }}
+   
+   - name: Register Contents Of build code base
+     command: "ls {{ nex_app_build_code_base }}"
+     register: code_base_contents
+   
+   - name: Fail If Build Isn't Empty
+     fail:
+       msg="Build dir is not empty!  Cannot continue. {{ nex_app_build_code_base }}"
+     when:
+       - code_base_contents.stdout != ""
+   
+   - name: Clone Client Repository
+     git:
+       repo="{{ nex_app_git_repo }}"
+       dest="{{ nex_app_build_code_base }}"
+       version="{{ nex_app_git_branch }}"
+     become: true
+     become_user: "{{ nex_app_unix_user }}"
+     become_flags: "-E"
+     when:
+       - nex_app_git_repo is defined
+       - code_base_contents.stdout == ""
+ 
+  rescue:
+   - include: tasks/build/failure.yml

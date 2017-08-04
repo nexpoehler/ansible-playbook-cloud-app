@@ -1,0 +1,11 @@
+---
+
+- name: Delete Failed Build
+  file:
+    path="{{ nex_app_build_code_base }}"
+    state="absent"
+
+- name: Report Failure
+  fail:
+    msg="Something went wrong during build creation"
+

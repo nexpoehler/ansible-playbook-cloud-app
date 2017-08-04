@@ -33,7 +33,7 @@
 
 - name: Make Sure Log Directory Exists
   file:
-    path="{{ nex_app_root }}/log"
+    path="{{ nex_app_log_root }}"
     owner="{{ nex_app_unix_user }}"
     group="{{ nex_app_unix_group }}"
     state="directory"
@@ -54,23 +54,3 @@
     group="{{ nex_app_unix_group }}"
     state="directory"
     mode=2751
-
-- name: Make Sure Shared Domain Relative Docroot Dir Exists
-  file:
-    path="{{ nfs_shared_path }}/{{ nex_app_domain }}/{{ nex_app_relative_docroot }}"
-    owner="{{ nex_app_unix_user }}"
-    group="{{ nex_app_unix_group }}"
-    state="directory"
-    mode=2751
-
-- name: Make Sure Html Symlink Exists
-  file:
-    dest="{{ nex_app_doc_root }}"
-    src="{{ nfs_shared_path }}/{{ nex_app_domain }}/{{ nex_app_relative_docroot }}"
-    owner="{{ nex_app_unix_user }}"
-    group="{{ nex_app_unix_group }}"
-    state="link"
-
-- name: Register the Doc Root for Other Roles
-  set_fact:
-    nex_app_doc_root="{{ nex_app_doc_root }}"

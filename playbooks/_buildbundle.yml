@@ -1,0 +1,9 @@
+---
+
+- name: Create Build Bundle
+  hosts: fpm[0]
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - include: tasks/build/bundle.yml
+
