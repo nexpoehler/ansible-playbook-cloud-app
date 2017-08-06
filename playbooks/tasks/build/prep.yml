@@ -1,12 +1,12 @@
 ---
 
 - block:
-   - name: Give user access to SSH_AUTH_SOCK dir
+   - name: Give User Access to SSH_AUTH_SOCK Dir
      shell: setfacl -m u:{{ nex_app_unix_user }}:x $(dirname $SSH_AUTH_SOCK)
      become: true
      become_flags: "-E"
    
-   - name: Give user access to SSH_AUTH_SOCK
+   - name: Give User Access to SSH_AUTH_SOCK
      shell: setfacl -m u:{{ nex_app_unix_user }}:rwx $SSH_AUTH_SOCK
      become: true
      become_flags: "-E"
@@ -31,7 +31,7 @@
      debug:
        msg="nex_app_build_code_base = {{ nex_app_build_code_base }}"
    
-   - name: Create build base
+   - name: Create Build Base
      file: 
        path="{{ nex_app_build_base }}"
        state="directory"
@@ -40,7 +40,7 @@
        owner="{{ nex_app_unix_user }}"
        group="{{ nex_app_unix_group }}"
    
-   - name: Create build code base
+   - name: Create Build Code Base
      file: 
        path="{{ nex_app_build_code_base }}"
        state="directory"
@@ -49,7 +49,7 @@
        owner="{{ nex_app_unix_user }}"
        group="{{ nex_app_unix_group }}"
    
-   - name: Fix build base context
+   - name: Fix Build Base Context
      command:
        restorecon {{ hostvars[groups['fpm'][0]]['nex_app_build_code_base'] }}
    
@@ -57,7 +57,7 @@
      command: "ls {{ nex_app_build_code_base }}"
      register: code_base_contents
    
-   - name: Fail If Build Isn't Empty
+   - name: Fail if Build Isn't Empty
      fail:
        msg="Build dir is not empty!  Cannot continue. {{ nex_app_build_code_base }}"
      when:

@@ -7,7 +7,7 @@
        setype=yes
      register: bundle_result
  
-   - name: Set fact for local bundle
+   - name: Set Fact for Local Bundle
      set_fact:
        nex_app_bundle_archive="{{ bundle_result.dest }}" 
   rescue:

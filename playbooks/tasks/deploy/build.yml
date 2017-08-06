@@ -9,7 +9,7 @@
     unmount-app-root.sh {{ nex_app_root }}
   register: result
 
-- name: Mount build id
+- name: Mount Build ID
   mount:
     opts="bind"
     fstype="none"
@@ -17,7 +17,7 @@
     name="{{ nex_app_root }}"
     src="{{ nex_app_build_code_base }}"
 
-#- name: Sync the shared directories
+#- name: Sync the Shared Directories
 #  synchronize:
 #    src="{{ nex_app_root }}/{{ item }}"
 #    dest="{{ nfs_shared_path }}/{{ item }}"
@@ -29,7 +29,7 @@
 #  when:
 #    - inventory_hostname == groups['fpm'][0]
 
-- name: Sync the shared dirs
+- name: Sync the Shared Dirs
   script:
     sync-shared-dir.sh {{ nex_app_root }}/{{ item }} {{ nfs_shared_path }}/{{ item }}
   delegate_to: "{{ inventory_hostname }}"
@@ -37,7 +37,7 @@
   when:
     - inventory_hostname == groups['fpm'][0] 
 
-- name: Mount the shared dirs
+- name: Mount the Shared Dirs
   mount:
     opts="bind"
     fstype="none"
