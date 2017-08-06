@@ -1,0 +1,8 @@
+---
+
+- name: Synchronize Builds
+  hosts: fpm[1:]:web:fs
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - include: tasks/build/sync.yml

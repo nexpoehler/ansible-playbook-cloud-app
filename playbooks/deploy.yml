@@ -1,12 +1,31 @@
 ---
 
-- name: Deploy Application
-  hosts: fs
+- name: Deploy An Application Build
+  hosts: fpm:web:fs
   become: true
   any_errors_fatal: true
   pre_tasks:
     - include: tasks/all.yml mode="pre"
+
+    - name: Set Build Code Base Fact
+      set_fact:
+        nex_app_build_code_base="{{ nex_app_build_base }}/{{ nex_app_build_id }}/code"
+
+    - name: Run Pre Deploy Script
+      script:
+        run-pre-deploy-hook.sh {{ nex_app_build_code_base }}
+      become: yes
+      become_user: "{{ nex_app_unix_user }}"
+
+    - include: tasks/deploy/build.yml
+
   roles:
     - { role: "{{ nex_app }}", mode: "deploy" }
+ 
   post_tasks:
-    - include: tasks/all.yml mode="post"
+    - name: Run Post Deploy Script
+      script:
+        run-post-deploy-hook.sh {{ nex_app_build_code_base }}
+      become: yes
+      become_user: "{{ nex_app_unix_user }}"
+

@@ -1,6 +1,7 @@
 ---
 
 - include: _base.yml tags=base
+- include: _server.yml tags=server
 - include: _fs.yml tags=fs
 - include: _web.yml tags=web
 - include: _fpm.yml tags=fpm

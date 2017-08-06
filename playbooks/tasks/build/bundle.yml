@@ -1,0 +1,14 @@
+---
+- block:
+   - name: Bundle Build
+     archive:
+       path="{{ nex_app_build_base }}/{{ nex_app_build_id }}"
+       dest="{{ nfs_shared_path }}/{{ nex_app_build_id }}.tgz"
+       setype=yes
+     register: bundle_result
+ 
+   - name: Set Fact for Local Bundle
+     set_fact:
+       nex_app_bundle_archive="{{ bundle_result.dest }}" 
+  rescue:
+   - include: tasks/build/failure.yml

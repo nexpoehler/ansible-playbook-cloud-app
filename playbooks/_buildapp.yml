@@ -1,0 +1,20 @@
+---
+
+- name: Build Application
+  hosts: fpm[0]
+  become: true
+  any_errors_fatal: true
+
+  roles:
+    - { role: "{{ nex_app }}", mode: "build" }
+
+  post_tasks:
+    - block:
+       - name: Run Post Build Script
+         script:
+           run-build-hook.sh {{ nex_app_build_code_base }}
+         become: yes
+         become_user: "{{ nex_app_unix_user }}"
+ 
+      rescue:
+       - include: tasks/build/failure.yml
