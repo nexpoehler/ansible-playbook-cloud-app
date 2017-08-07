@@ -1,6 +1,5 @@
 ---
 nex_app: nexcess.magento2
-nex_app_name: magento2
 nex_app_domain: magentocloud.nexcess.net
 
 eth0: eth0

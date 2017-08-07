@@ -1,4 +1,4 @@
 ---
-nex_app_name: magento2
+nex_app_domain: magentocloud.nexcess.net
 nex_app_url_asset_archive_file: https://github.com/nexpoehler/hello-world-app/archive/master.zip
 nex_app_asset_archive_base: ''

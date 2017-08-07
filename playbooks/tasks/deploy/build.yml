@@ -17,35 +17,3 @@
     name="{{ nex_app_root }}"
     src="{{ nex_app_build_code_base }}"
 
-#- name: Sync the Shared Directories
-#  synchronize:
-#    src="{{ nex_app_root }}/{{ item }}"
-#    dest="{{ nfs_shared_path }}/{{ item }}"
-#    recursive="yes"
-#    owner="yes"
-#    perms="yes"
-#  delegate_to: "{{ inventory_hostname }}"
-#  with_items: "{{ nex_app_shared_mounts }}"
-#  when:
-#    - inventory_hostname == groups['fpm'][0]
-
-- name: Sync the Shared Dirs
-  script:
-    sync-shared-dir.sh {{ nex_app_root }}/{{ item }} {{ nfs_shared_path }}/{{ item }}
-  delegate_to: "{{ inventory_hostname }}"
-  with_items: "{{ nex_app_shared_mounts }}"
-  when:
-    - inventory_hostname == groups['fpm'][0] 
-
-- name: Mount the Shared Dirs
-  mount:
-    opts="bind"
-    fstype="none"
-    state="mounted"
-    name="{{ nex_app_root }}/{{ item }}"
-    src="{{ nfs_shared_path }}/{{ item }}"
-  with_items: "{{ nex_app_shared_mounts }}"
-
-- name: Application Start
-  script:
-    application-start.sh
