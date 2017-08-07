@@ -6,7 +6,7 @@ nex_app_unix_group: "user"
 nex_app_unix_uid: 5555
 nex_app_unix_gid: 5555
 nex_app_unix_home: "/home/{{ nex_app_unix_user }}"
-nex_app_root: "/var/www/html/{{ nex_app_name }}"
+nex_app_root: "/var/www/html/{{ nex_app_domain }}"
 nex_app_doc_root: "{{ nex_app_root }}"
 nex_app_log_root: "{{ nex_app_unix_home }}/log"
 nex_app_unix_shell: "/bin/bash"

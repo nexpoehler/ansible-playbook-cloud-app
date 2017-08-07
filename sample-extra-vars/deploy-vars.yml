@@ -1,9 +1,4 @@
 ---
 nex_app: nexcess.magento2
-nex_app_name: magento2
+nex_app_domain: magnetocloud.nexcess.net
 nex_app_build_id: '20170803000339.91893'
-nex_app_shared_mounts:
-  - var
-  - app/etc
-  - pub/media
-  - pub/static
