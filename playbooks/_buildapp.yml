@@ -4,6 +4,18 @@
   hosts: fpm[0]
   become: true
   any_errors_fatal: true
+  pre_tasks:
+    - name: Gather dbpass
+      command: cat {{ nex_app_build_base }}/.dbpass
+      register: gather_result
+      when:
+        - nex_app_db_pass is not defined
+    
+    - name: Define nex_app_db_pass
+      set_fact:
+        nex_app_db_pass="{{ gather_result.stdout }}"
+      when:
+        - nex_app_db_pass is not defined
 
   roles:
     - { role: "{{ nex_app }}", mode: "build" }

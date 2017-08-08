@@ -11,12 +11,6 @@
      become: true
      become_flags: "-E"
    
-   - name: Setup secontext for build base
-     sefcontext:
-       target="{{ nex_app_build_base }}(/.*)?"
-       setype="httpd_sys_content_t"
-       state="present"
-   
    - name: Define Build ID
      set_fact:
        nex_app_build_id="{{ lookup('pipe','date +%Y%m%d%H%M%S.%5N') }}"
@@ -30,16 +24,7 @@
    - name: Display Code Base
      debug:
        msg="nex_app_build_code_base = {{ nex_app_build_code_base }}"
-   
-   - name: Create Build Base
-     file: 
-       path="{{ nex_app_build_base }}"
-       state="directory"
-       mode="0711"
-       setype="_default"
-       owner="{{ nex_app_unix_user }}"
-       group="{{ nex_app_unix_group }}"
-   
+      
    - name: Create Build Code Base
      file: 
        path="{{ nex_app_build_code_base }}"
