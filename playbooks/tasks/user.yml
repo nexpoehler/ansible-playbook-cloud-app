@@ -16,6 +16,26 @@
     shell="{{ nex_app_unix_shell }}"
     state="present"
 
+- name: Create Build Base
+  file: 
+    path="{{ nex_app_build_base }}"
+    state="directory"
+    mode="0711"
+    setype="_default"
+    owner="{{ nex_app_unix_user }}"
+    group="{{ nex_app_unix_group }}"
+  when: 
+    - mode == "pre"
+    - server_role == "fpm" or server_role == "web" or server_role == "fs"
+
+- name: Setup .dbpass
+  shell: 
+    echo {{ nex_app_db_pass }} > {{ nex_app_build_base }}/.dbpass && chmod 600 {{ nex_app_build_base }}/.dbpass
+  when:
+    - mode == "pre"
+    - server_role == "fpm"
+    - nex_app_db_pass is defined
+
 - name: Ensure Proper Owner of Home Directory
   file:
     path="{{ nex_app_unix_home }}"
