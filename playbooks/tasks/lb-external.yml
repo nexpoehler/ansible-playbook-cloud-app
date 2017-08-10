@@ -2,8 +2,10 @@
 
 - name: Reformat external Dicts For HAProxy (with varnish)
   set_fact:
-    haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item,ip=item,port=varnish_port,params=[]) ] }}"
+    haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item1,ip=item1,port=varnish_port,params=[]) ] }}"
   with_items: "{{ lb_varnish_backnet_addrs }}"
+  loop_control:
+    loop_var: "item1"
   when:
     - mode == "pre"    
     - lb_varnish_backnet_addrs is defined
@@ -11,8 +13,10 @@
 
 - name: Reformat external Dicts For HAProxy (without varnish)
   set_fact:
-    haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item,ip=item,port=varnish_port,params=[]) ] }}"
+    haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item2,ip=item2,port=varnish_port,params=[]) ] }}"
   with_items: "{{ lb_web_backnet_addrs }}"
+  loop_control:
+    loop_var: "item2"
   when:
     - mode == "pre"    
     - lb_varnish_backnet_addrs is not defined

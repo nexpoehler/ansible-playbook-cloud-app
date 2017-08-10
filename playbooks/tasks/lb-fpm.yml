@@ -2,8 +2,10 @@
 
 - name: Reformat FPM Dicts For HAProxy
   set_fact:
-    haproxy_fpm_servers="{{ haproxy_fpm_servers | default([]) + [ dict(name=item,ip=item,port=php_fpm_port,params=[]) ] }}"
+    haproxy_fpm_servers="{{ haproxy_fpm_servers | default([]) + [ dict(name=ip_item,ip=ip_item,port=php_fpm_port,params=[]) ] }}"
   with_items: "{{ fpm_backnet_addrs }}"
+  loop_control:
+    loop_var: ip_item
   when: mode == "pre"
   run_once: true
 

@@ -2,8 +2,10 @@
 
 - name: Reformat redis Dicts For HAProxy
   set_fact:
-    haproxy_redis_servers="{{ haproxy_redis_servers | default([]) + [ dict(name=item,ip=item,port=redis_port,params=[]) ] }}"
+    haproxy_redis_servers="{{ haproxy_redis_servers | default([]) + [ dict(name=ip_item,ip=ip_item,port=redis_port,params=[]) ] }}"
   with_items: "{{ redis_backnet_addrs }}"
+  loop_control:
+    loop_var: ip_item
   when: mode == "pre"
   run_once: true
 

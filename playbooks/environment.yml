@@ -1,17 +1,5 @@
 ---
 
 - include: _base.yml tags=base
-- include: _server.yml tags=server
 - include: _fs.yml tags=fs
-- include: _web.yml tags=web
-- include: _fpm.yml tags=fpm
-- include: _db.yml tags=db
-- include: _lb-web.yml tags=lb-web
-- include: _lb-fpm.yml tags=lb-fpm
-- include: _redis.yml tags=redis
-- include: _lb-redis.yml tags=lb-redis
-- include: _varnish.yml tags=varnish
-- include: _lb-varnish.yml tags=lb-varnish
-- include: _lb-external.yml tags=lb-external
-
-
+- include: _env.yml

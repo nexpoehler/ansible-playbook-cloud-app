@@ -1,0 +1,36 @@
+---
+
+- name: Setup All The Servers
+  hosts: fs:web:fpm:db:varnish:redis:lb-web:lb-fpm:lb-varnish:lb-redis:lb-external
+  become: true
+  strategy: free
+  pre_tasks:
+    - include: tasks/{{ item }}.yml mode="pre"
+      with_items: "{{ group_names }}"
+
+  roles:
+    - { role: nexcess.server, tags: ["server"] }
+
+    - { role: nexcess.apache, when: server_role == "web", tags: ["web"] }
+    - { role: nexcess.nfs,    when: server_role == "web" or server_role == "fpm", tags: ["web"] }
+
+    - { role: nexcess.repo-percona, when: server_role == "db", tags: ["db"] }
+    - { role: nexcess.mysql,        when: server_role == "db", tags: ["db"] }
+
+    - { role: nexcess.php,      when: server_role == "fpm" or server_role == "fs", tags: ["fpm"] }
+    - { role: nexcess.composer, when: server_role == "fpm" or server_role == "fs", tags: ["fpm"] }
+
+    - { role: nexcess.varnish, when: server_role == "varnish", tags: ["varnish"] }
+
+    - { role: nexcess.redis, when: server_role == "redis", tags: ["redis"] }
+
+    - { role: nexcess.ssl-cert, when: server_role == "lb-external", tags: ["lb"] }
+    - { role: nexcess.haproxy,  when: server_role == "lb-external" or server_role == "lb-fpm" or server_role == "lb-redis" or server_role == "lb-varnish" or server_role == "lb-web", tags: ["lb"] }
+
+    - { role: "{{ nex_app }}", mode: "env" }
+
+    - { role: nexcess.puppet, when: "nex_env_target is undefined or nex_env_target != 'vagrant'" }
+    
+  post_tasks:
+    - include: tasks/{{ item }}.yml mode="post"
+      with_items: "{{ group_names }}"
