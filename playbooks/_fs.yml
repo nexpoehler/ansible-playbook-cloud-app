@@ -6,9 +6,6 @@
     - include: tasks/fs.yml mode="pre"
   roles:
     - nexcess.nfs
-    - nexcess.php
-    - nexcess.composer
-    - { role: "{{ nex_app }}", mode: "env" }
   post_tasks:
     - include: tasks/fs.yml mode="post"
 

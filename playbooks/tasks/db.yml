@@ -1,8 +1,10 @@
 ---
 
 - name: Define Application Database User Info
-  set_fact: nex_app_db_user_info="{{ nex_app_db_user_info | default([]) + [ dict(name=nex_app_db_user, host=item, password=nex_app_db_pass, priv=nex_app_db_name + ".*:ALL") ] }}"
+  set_fact: nex_app_db_user_info="{{ nex_app_db_user_info | default([]) + [ dict(name=nex_app_db_user, host=ip_item, password=nex_app_db_pass, priv=nex_app_db_name + ".*:ALL") ] }}"
   with_items: "{{ fpm_backnet_addrs + fs_backnet_addrs }}"
+  loop_control:
+    loop_var: ip_item
   when:
     - mode == 'pre'
     - nex_app_db_user is defined

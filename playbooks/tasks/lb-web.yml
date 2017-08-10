@@ -2,8 +2,10 @@
 
 - name: Reformat Webserver Dicts For HAProxy
   set_fact:
-    haproxy_web_servers="{{ haproxy_web_servers | default([]) + [ dict(name=item,ip=item,port=web_port,params=[]) ] }}"
+    haproxy_web_servers="{{ haproxy_web_servers | default([]) + [ dict(name=ip_item,ip=ip_item,port=web_port,params=[]) ] }}"
   with_items: "{{ web_backnet_addrs }}"
+  loop_control:
+    loop_var: ip_item
   when: mode == "pre"
   run_once: true
 
