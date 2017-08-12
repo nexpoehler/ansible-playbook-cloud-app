@@ -3,6 +3,7 @@
 - name: Setup All The Servers
   hosts: fs:web:fpm:db:varnish:redis:lb-web:lb-fpm:lb-varnish:lb-redis:lb-external
   become: true
+  any_errors_fatal: true
   strategy: free
   pre_tasks:
     - include: tasks/{{ item }}.yml mode="pre"
