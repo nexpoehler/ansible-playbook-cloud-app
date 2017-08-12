@@ -2,6 +2,7 @@
 - name: Setup Fileserver
   hosts: fs
   become: true
+  any_errors_fatal: true
   pre_tasks:
     - include: tasks/fs.yml mode="pre"
   roles:
