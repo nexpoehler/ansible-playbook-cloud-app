@@ -2,6 +2,8 @@
 
 server_role: "redis"
 
+redis_bind: "{{ backnet_addr }}"
+
 firewall_v4_group_rules:
   401 allow backnet redis traffic:
     - "-A INPUT -p tcp --dport {{ redis_port }} -j ACCEPT -s {{ lb_redis_backnet_addrs | join(',') }} -d {{ backnet_addr }}"

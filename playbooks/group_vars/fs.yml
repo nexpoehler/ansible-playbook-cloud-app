@@ -21,6 +21,10 @@ nfs_ports:
   - {name: STATD_PORT,          value: "{{ nfs_STATD_PORT }}" }
   - {name: STATD_OUTGOING_PORT, value: "{{ nfs_STATD_OUTGOING_PORT }}" }
 
+rpc_nfsd_args:  "-H {{ backnet_addr }}"
+rpc_statd_args: "-n {{ backnet_addr }}"
+rpc_bind_args:  "-h {{ backnet_addr }}"
+
 firewall_v4_group_rules:
   401 allow portmap ports:
     - "-A INPUT -m state --state NEW -p tcp --dport 111 -j ACCEPT"
