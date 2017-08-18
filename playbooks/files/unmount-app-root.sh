@@ -4,6 +4,7 @@ MOUNT=$1
 
 function do_unmount {
     local m=$1
+    umount $m
     while mountpoint $m; do
 	fuser -k $m
 	umount $m
