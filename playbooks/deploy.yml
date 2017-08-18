@@ -29,7 +29,7 @@
       delegate_to: "{{ inventory_hostname }}"
       with_items: "{{ nex_app_shared_mounts }}"
       when:
-        - inventory_hostname == groups['fpm'][0]
+        - inventory_hostname == groups['fs'][0]
         - nex_app_shared_mounts is defined
     
     - name: Mount the Shared Dirs

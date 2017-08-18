@@ -36,7 +36,7 @@
    
    - name: Fix Build Base Context
      command:
-       restorecon {{ hostvars[groups['fpm'][0]]['nex_app_build_code_base'] }}
+       restorecon {{ nex_app_build_code_base }}
    
    - name: Register Contents Of build code base
      command: "ls {{ nex_app_build_code_base }}"
