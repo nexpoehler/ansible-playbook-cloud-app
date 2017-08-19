@@ -11,7 +11,7 @@
 
 - name: Mount Build ID
   mount:
-    opts="bind"
+    opts="{{ nex_app_build_mount_opts }}"
     fstype="none"
     state="mounted"
     name="{{ nex_app_root }}"

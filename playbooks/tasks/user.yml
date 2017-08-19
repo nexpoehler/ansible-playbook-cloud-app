@@ -49,7 +49,7 @@
     owner="{{ nex_app_unix_user }}"
     group="{{ nex_app_unix_group }}"
     state="directory"
-    mode=2751
+    mode=711
 
 - name: Make Sure Log Directory Exists
   file:
