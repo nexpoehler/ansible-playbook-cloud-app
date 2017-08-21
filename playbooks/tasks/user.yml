@@ -33,7 +33,7 @@
     echo {{ nex_app_db_pass }} > {{ nex_app_build_base }}/.dbpass && chmod 600 {{ nex_app_build_base }}/.dbpass
   when:
     - mode == "pre"
-    - server_role == "fpm"
+    - server_role == "fpm" or server_role == "fs"
     - nex_app_db_pass is defined
 
 - name: Ensure Proper Owner of Home Directory
