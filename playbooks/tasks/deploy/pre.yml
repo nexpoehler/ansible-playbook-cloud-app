@@ -1,5 +1,15 @@
 ---
 
+- name: Set Build Code Base Fact
+  set_fact:
+    nex_app_build_code_base="{{ nex_app_build_base }}/{{ nex_app_build_id }}/code"
+
+- name: Run Pre Deploy Script
+  script:
+    run-pre-deploy-hook.sh {{ nex_app_build_code_base }}
+  become: yes
+  become_user: "{{ nex_app_unix_user }}"
+
 - name: Application Stop
   script:
     application-stop.sh
