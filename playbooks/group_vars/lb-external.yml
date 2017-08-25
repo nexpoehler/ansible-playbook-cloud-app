@@ -58,21 +58,21 @@ ssl_key: |
 ## HAProxy Vars
 haproxy_global:
   log:
-    - address: "/dev/log"
-      facility: "local0"
-      level: "info"
-  stats:
-    socket: "/var/lib/haproxy/stats mode 600 level admin"
+    - address: /dev/log
+      facility: local0
+    - address: /dev/log
+      facility: local1
+      level: notice
   ssl_default_bind_options: "{{ ssl_options }}"
   ssl_default_bind_ciphers: "{{ ssl_ciphers }}"
+  chroot: /var/lib/haproxy
+  user: haproxy
+  group: haproxy
+  daemon: true
+  maxconn: 200000
   tune:
     ssl:
       default-dh-param: 4096
-  user: "haproxy"
-  group: "haproxy"
-  chroot: "/var/lib/haproxy"
-  daemon: true
-  maxconn: 200000
 
 haproxy_frontends:
   - name: "fe-ext-http"
