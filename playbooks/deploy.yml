@@ -22,19 +22,7 @@
   roles:
     - { role: "{{ nex_app }}", mode: "deploy" }
  
-  post_tasks:
-    #- name: Sync the Shared Directories
-    #  synchronize:
-    #    src="{{ nex_app_root }}/{{ item }}"
-    #    dest="{{ nfs_shared_path }}/{{ item }}"
-    #    recursive="yes"
-    #    owner="yes"
-    #    perms="yes"
-    #  delegate_to: "{{ inventory_hostname }}"
-    #  with_items: "{{ nex_app_shared_mounts }}"
-    #  when:
-    #    - inventory_hostname == groups['fpm'][0]
-    
+  post_tasks:    
     - name: Sync the Shared Dirs
       script:
         sync-shared-dir.sh {{ nex_app_root }}/{{ item }} {{ nfs_shared_path }}/{{ item }}
@@ -60,6 +48,14 @@
         run-post-deploy-hook.sh {{ nex_app_build_code_base }}
       become: yes
       become_user: "{{ nex_app_unix_user }}"
+
+    - name: Install CRONs
+      cron: "{{ item }}"
+      with_items: "{{ cron }}"
+      when:
+        - nex_app_tags is defined
+        - cron is defined
+        - '"cron" in nex_app_tags'
 
     - name: Application Start
       script:
