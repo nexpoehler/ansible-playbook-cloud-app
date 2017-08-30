@@ -18,6 +18,8 @@ mysql_databases: "{{ nex_app_db_info|default([]) }}"
 
 mysql_users: "{{ nex_app_db_user_info|default([]) }}"
 
+mysql_bind_address: "{{ backnet_addr }}"
+
 firewall_v4_group_rules:
   401 allow backnet mysql traffic from PHP servers:
     - "-A INPUT -p tcp --dport 3306 -j ACCEPT -s {{ fpm_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
