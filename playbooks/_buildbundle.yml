@@ -1,7 +1,7 @@
 ---
 
 - name: Create Build Bundle
-  hosts: fpm[0]
+  hosts: fs[0]
   become: true
   any_errors_fatal: true
   tasks:

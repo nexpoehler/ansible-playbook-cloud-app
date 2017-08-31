@@ -13,6 +13,7 @@ nex_app_unix_shell: "/bin/bash"
 nex_app_build_base: "/var/nexcess-app-deploy"
 nex_app_db_user: "dbuser"
 nex_app_db_name: "db"
+nex_app_build_mount_opts: "bind,ro"
 
 ## net-device vars
 eth0: eth0

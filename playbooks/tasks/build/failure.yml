@@ -4,6 +4,8 @@
   file:
     path="{{ nex_app_build_code_base }}"
     state="absent"
+  when:
+    - nex_app_build_code_base is defined
 
 - name: Report Failure
   fail:

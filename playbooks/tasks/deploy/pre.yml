@@ -1,0 +1,29 @@
+---
+
+- name: Set Build Code Base Fact
+  set_fact:
+    nex_app_build_code_base="{{ nex_app_build_base }}/{{ nex_app_build_id }}/code"
+
+- name: Run Pre Deploy Script
+  script:
+    run-pre-deploy-hook.sh {{ nex_app_build_code_base }}
+  become: yes
+  become_user: "{{ nex_app_unix_user }}"
+
+- name: Application Stop
+  script:
+    application-stop.sh
+
+- name: Unmount
+  script:
+    unmount-app-root.sh {{ nex_app_root }}
+  register: result
+
+- name: Mount Build ID
+  mount:
+    opts="{{ nex_app_build_mount_opts }}"
+    fstype="none"
+    state="mounted"
+    name="{{ nex_app_root }}"
+    src="{{ nex_app_build_code_base }}"
+

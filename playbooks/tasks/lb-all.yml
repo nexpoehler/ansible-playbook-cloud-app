@@ -1,0 +1,16 @@
+---
+
+- name: Ensure Haproxy Chroot Dev Dir Exists
+  file:
+    name="{{ haproxy_global.chroot }}/dev"
+    state="directory"
+
+- name: Install Haproxy Rsyslog Config
+  template: 
+    src="haproxy-rsyslog.conf.j2"
+    dest="/etc/rsyslog.d/haproxy.conf"
+
+- name: Restart Rsyslog
+  service:
+    name="rsyslog"
+    state="restarted"

@@ -1,0 +1,56 @@
+---
+
+- name: Playbook That Checks Application Service Status
+  hosts: all
+  become: true
+  any_errors_fatal: true
+  strategy: free
+  tasks:
+    - name: Check NFS Service Status
+      command: service nfs status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'fs'
+    
+    - name: Check MySQL Service Status
+      command: service mysqld status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'db'
+    
+    - name: Check Httpd Service Status
+      command: service httpd status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'web'
+    
+    - name: Check PHP Service Status
+      command: service php70u-php-fpm status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'fpm'
+    
+    - name: Check Varnish Status
+      command: service varnish status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'varnish'
+    
+    - name: Check Redis Service Status
+      command: service redis_6379 status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'redis'
+    
+    - name: Check Service Status
+      command: service haproxy status
+      register: agent_status
+      changed_when: false
+      when: 
+        - server_role == 'lb-external' or server_role == 'lb-web' or server_role =='lb-varnish' or server_role == 'lb-fpm' or server_role == 'lb-redis'

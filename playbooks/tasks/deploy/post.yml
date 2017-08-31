@@ -1,0 +1,38 @@
+- name: Sync the Shared Dirs
+  script:
+    sync-shared-dir.sh {{ nex_app_root }}/{{ item }} {{ nfs_shared_path }}/{{ item }}
+  delegate_to: "{{ inventory_hostname }}"
+  with_items: "{{ nex_app_shared_mounts }}"
+  when:
+    - inventory_hostname == groups['fs'][0]
+    - nex_app_shared_mounts is defined
+
+- name: Mount the Shared Dirs
+  mount:
+    opts="bind"
+    fstype="none"
+    state="mounted"
+    name="{{ nex_app_root }}/{{ item }}"
+    src="{{ nfs_shared_path }}/{{ item }}"
+  with_items: "{{ nex_app_shared_mounts }}"
+  when:
+    - nex_app_shared_mounts is defined
+
+- name: Run Post Deploy Script
+  script:
+    run-post-deploy-hook.sh {{ nex_app_build_code_base }}
+  become: yes
+  become_user: "{{ nex_app_unix_user }}"
+
+- name: Install CRONs
+  cron: "{{ item }}"
+  with_items: "{{ cron }}"
+  when:
+    - nex_app_tags is defined
+    - cron is defined
+    - '"cron" in nex_app_tags'
+
+- name: Application Start
+  script:
+    application-start.sh
+

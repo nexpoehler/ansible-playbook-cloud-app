@@ -1,21 +1,25 @@
 ---
 
 - name: Build Application
-  hosts: fpm[0]
+  hosts: fs[0]
   become: true
   any_errors_fatal: true
   pre_tasks:
+    - name: Check dbpass
+      stat: path="{{ nex_app_build_base }}/.dbpass"
+      register: dbpass_result
+
     - name: Gather dbpass
       command: cat {{ nex_app_build_base }}/.dbpass
       register: gather_result
       when:
-        - nex_app_db_pass is not defined
+        - dbpass_result.stat.exists
     
-    - name: Define nex_app_db_pass
+    - name: Define nex_app_db_pass_override
       set_fact:
-        nex_app_db_pass="{{ gather_result.stdout }}"
+        nex_app_db_pass_override="{{ gather_result.stdout }}"
       when:
-        - nex_app_db_pass is not defined
+        - dbpass_result.stat.exists
 
   roles:
     - { role: "{{ nex_app }}", mode: "build" }

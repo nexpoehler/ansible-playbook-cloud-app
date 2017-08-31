@@ -2,25 +2,25 @@
 
 - name: Create Build Code Base
   file: 
-    path="{{ hostvars[groups['fpm'][0]]['nex_app_build_code_base'] }}"
+    path="{{ hostvars[groups['fs'][0]]['nex_app_build_code_base'] }}"
     state="directory"
-    mode="0711"
+    mode=0711
     owner="{{ nex_app_unix_user }}"
     group="{{ nex_app_unix_group }}"
 
 - name: Fix Build Base Context
   command:
-    restorecon {{ hostvars[groups['fpm'][0]]['nex_app_build_code_base'] }}
+    restorecon {{ hostvars[groups['fs'][0]]['nex_app_build_code_base'] }}
 
 - name: Install Bundle
   unarchive:
-    src="{{ hostvars[groups['fpm'][0]]['nex_app_bundle_archive'] }}"
+    src="{{ hostvars[groups['fs'][0]]['nex_app_bundle_archive'] }}"
     dest="{{ nex_app_build_base }}"
     remote_src="yes"
 
 - name: Delete Bundle Archive
   file:
-    path="{{ hostvars[groups['fpm'][0]]['nex_app_bundle_archive'] }}"
+    path="{{ nex_app_bundle_archive }}"
     state="absent"
   when:
     - inventory_hostname == groups['fs'][0]

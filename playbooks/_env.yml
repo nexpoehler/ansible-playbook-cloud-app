@@ -8,6 +8,7 @@
   pre_tasks:
     - include: tasks/{{ item }}.yml mode="pre"
       with_items: "{{ group_names }}"
+      static: no
 
   roles:
     - { role: nexcess.server, tags: ["server"] }
@@ -35,3 +36,4 @@
   post_tasks:
     - include: tasks/{{ item }}.yml mode="post"
       with_items: "{{ group_names }}"
+      static: no
