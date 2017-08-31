@@ -1,5 +1,6 @@
 ---
 - include: lb-all.yml
+  tags: "lb"
 
 - name: Reformat redis Dicts For HAProxy
   set_fact:
@@ -7,6 +8,7 @@
   with_items: "{{ redis_backnet_addrs }}"
   loop_control:
     loop_var: ip_item
+  tags: "lb"
   when: mode == "pre"
   run_once: true
 
@@ -16,6 +18,7 @@
     proto="tcp"
     setype="http_port_t"
     state="present"
+  tags: "lb"
   when: mode == "pre"
 
 - name: Allow Haproxy To Bind On Redis Port
@@ -24,4 +27,5 @@
     proto="tcp"
     setype="http_port_t"
     state="present"
+  tags: "lb"
   when: mode == "pre"

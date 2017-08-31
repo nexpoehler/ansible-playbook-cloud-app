@@ -1,5 +1,6 @@
 ---
 - include: lb-all.yml
+  tags: "lb"
 
 - name: Reformat FPM Dicts For HAProxy
   set_fact:
@@ -7,6 +8,7 @@
   with_items: "{{ fpm_backnet_addrs }}"
   loop_control:
     loop_var: ip_item
+  tags: "lb"
   when: mode == "pre"
   run_once: true
 
@@ -16,4 +18,5 @@
     proto="tcp"
     setype="http_port_t"
     state="present"
+  tags: "lb"
   when: mode == "pre"

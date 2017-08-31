@@ -1,12 +1,13 @@
 ---
 - include: lb-all.yml
-
+  tags: "lb"
 - name: Reformat external Dicts For HAProxy (with varnish)
   set_fact:
     haproxy_external_servers="{{ haproxy_external_servers | default([]) + [ dict(name=item1,ip=item1,port=varnish_port,params=[]) ] }}"
   with_items: "{{ lb_varnish_backnet_addrs }}"
   loop_control:
     loop_var: "item1"
+  tags: "lb"
   when:
     - mode == "pre"    
     - lb_varnish_backnet_addrs is defined
@@ -18,6 +19,7 @@
   with_items: "{{ lb_web_backnet_addrs }}"
   loop_control:
     loop_var: "item2"
+  tags: "lb"
   when:
     - mode == "pre"    
     - lb_varnish_backnet_addrs is not defined
@@ -29,4 +31,5 @@
     proto="tcp"
     setype="http_port_t"
     state="present"
+  tags: "lb"
   when: mode == "pre"
