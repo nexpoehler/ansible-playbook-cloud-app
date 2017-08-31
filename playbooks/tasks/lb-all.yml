@@ -2,8 +2,8 @@
 
 - name: Ensure Haproxy Chroot Dev Dir Exists
   file:
-    name: "{{ haproxy_global.chroot }}/dev"
-    state: directory
+    name="{{ haproxy_global.chroot }}/dev"
+    state="directory"
 
 - name: Install Haproxy Rsyslog Config
   template: 

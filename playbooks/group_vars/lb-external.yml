@@ -58,16 +58,16 @@ ssl_key: |
 ## HAProxy Vars
 haproxy_global:
   log:
-    - address: /dev/log
-      facility: local0
-    - address: /dev/log
-      facility: local1
-      level: notice
+    - address: "/dev/log"
+      facility: "local0"
+    - address: "/dev/log"
+      facility: "local1"
+      level: "notice"
   ssl_default_bind_options: "{{ ssl_options }}"
   ssl_default_bind_ciphers: "{{ ssl_ciphers }}"
-  chroot: /var/lib/haproxy
-  user: haproxy
-  group: haproxy
+  chroot: "/var/lib/haproxy"
+  user: "haproxy"
+  group: "haproxy"
   daemon: true
   maxconn: 200000
   tune:
@@ -95,12 +95,12 @@ haproxy_backends:
     mode: "http"
     servers: "{{ haproxy_external_servers }}"
     options:
-      - forwardfor
+      - "forwardfor"
 
 ## Tweak sysctl so we can forward too
 server_extra_sysctl:
   - key: "net.ipv4.ip_forward"
-    value: "1"
+    value: 1
 
 ## Firewall
 firewall_v4_group_rules:

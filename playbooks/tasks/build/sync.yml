@@ -4,7 +4,7 @@
   file: 
     path="{{ hostvars[groups['fs'][0]]['nex_app_build_code_base'] }}"
     state="directory"
-    mode="0711"
+    mode=0711
     owner="{{ nex_app_unix_user }}"
     group="{{ nex_app_unix_group }}"
 
