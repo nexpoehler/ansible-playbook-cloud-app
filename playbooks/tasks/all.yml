@@ -42,3 +42,9 @@
   when: 
     - mode == "pre"
     - lb_varnish_backnet_addrs is not defined
+
+- name: Define nex_app_public_addr
+  set_fact: nex_app_public_addr="{{ hostvars[groups['lb-external'][0]]['public_addr'] }}"
+  when: 
+    - mode == "pre"
+  
