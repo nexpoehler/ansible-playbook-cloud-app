@@ -1,0 +1,10 @@
+---
+- name: Cleanup Build Artifacts
+  hosts: fs
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Delete Bundle Archive
+      file:
+        path="{{ nex_app_bundle_archive }}"
+        state="absent"

@@ -5,3 +5,4 @@
 - include: _buildapp.yml
 - include: _buildbundle.yml
 - include: _buildsync.yml
+- include: _buildcleanup.yml

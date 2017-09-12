@@ -18,9 +18,3 @@
     dest="{{ nex_app_build_base }}"
     remote_src="yes"
 
-- name: Delete Bundle Archive
-  file:
-    path="{{ nex_app_bundle_archive }}"
-    state="absent"
-  when:
-    - inventory_hostname == groups['fs'][0]

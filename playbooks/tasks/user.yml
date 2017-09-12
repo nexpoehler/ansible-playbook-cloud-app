@@ -67,10 +67,3 @@
     state="directory"
     mode=2751
 
-- name: Make Sure Shared Domain Dir Exists
-  file:
-    path="{{ nfs_shared_path }}/{{ nex_app_domain }}"
-    owner="{{ nex_app_unix_user }}"
-    group="{{ nex_app_unix_group }}"
-    state="directory"
-    mode=2751
