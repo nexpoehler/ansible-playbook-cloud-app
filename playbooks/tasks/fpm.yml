@@ -19,4 +19,6 @@
     dump="0"
     passno="2"
     state="mounted"
-  when: mode == "post"
+  when:
+    - mode == "post"
+    - nex_env_target is undefined or nex_env_target != 'vagrant'
