@@ -1,6 +1,8 @@
 ---
+
 - include: lb-all.yml
   tags: "lb"
+  when: nex_env_target != "vagrant"
 
 - name: Reformat varnish Dicts For HAProxy
   set_fact:
@@ -12,11 +14,28 @@
   when: mode == "pre"
   run_once: true
 
-- name: Allow Haproxy To Bind On Port haproxy stats port
+- name: Allow Haproxy To Bind On LB Varnish Port
   seport:
-    ports="{{ haproxy_stats_port }}"
+    ports="{{ lb_varnish_port }}"
     proto="tcp"
     setype="http_port_t"
     state="present"
   tags: "lb"
   when: mode == "pre"
+
+- name: "Define haproxy_frontends"
+  set_fact:
+    haproxy_frontends: "{{ lb_varnish_haproxy_frontends }}"
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+    - lb_varnish_haproxy_frontends is defined
+    
+- name: "Define haproxy_backends"
+  set_fact:
+    haproxy_backends: "{{ lb_varnish_haproxy_backends }}"
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+    - lb_varnish_haproxy_backends is defined
+

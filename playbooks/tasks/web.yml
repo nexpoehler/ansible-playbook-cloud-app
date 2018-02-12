@@ -1,6 +1,16 @@
 ---
 
-- include: tasks/user.yml
+- include: user.yml
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+    
+- name: Allow Apache To Bind On Backend Web Port
+  seport:
+    ports="{{ web_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
   when: mode == "pre"
 
 - name: mount nfs
@@ -14,7 +24,7 @@
     state="mounted"
   when:
     - mode == "post"
-    - nex_env_target is undefined or nex_env_target != "vagrant"
+    - nex_env_target != "vagrant"
 
 - name: Enable SELINUX httpd_use_nfs boolean
   seboolean:
@@ -30,10 +40,3 @@
     persistent="yes"
   when: mode == "post"
 
-- name: Allow Apache To Bind On Backend Web Port
-  seport:
-    ports="{{ web_port }}"
-    proto="tcp"
-    setype="http_port_t"
-    state="present"
-  when: mode == "pre"

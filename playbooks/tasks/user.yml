@@ -26,14 +26,14 @@
     group="{{ nex_app_unix_group }}"
   when: 
     - mode == "pre"
-    - server_role == "fpm" or server_role == "web" or server_role == "fs"
+    - "'fpm' in group_names or 'web' in group_names or 'fs' in group_names"
 
 - name: Setup .dbpass
   shell: 
     echo {{ nex_app_db_pass }} > {{ nex_app_build_base }}/.dbpass && chmod 600 {{ nex_app_build_base }}/.dbpass
   when:
     - mode == "pre"
-    - server_role == "fpm" or server_role == "fs"
+    - "'fpm' in group_names or 'fs' in group_names"
     - nex_app_db_pass is defined
 
 - name: Ensure Proper Owner of Home Directory

@@ -1,7 +1,5 @@
 ---
 
-server_role: "fs"
-
 nfs_exported_directories:
   - path: "{{ nfs_shared_path }}"
     hosts: "{{ nfs_export_hosts }}"

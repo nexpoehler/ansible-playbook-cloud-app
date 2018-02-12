@@ -1,7 +1,9 @@
 ---
+
 - include: lb-all.yml
   tags: "lb"
-
+  when: nex_env_target != "vagrant"
+  
 - name: Reformat redis Dicts For HAProxy
   set_fact:
     haproxy_redis_servers="{{ haproxy_redis_servers | default([]) + [ dict(name=ip_item,ip=ip_item,port=redis_port,params=[]) ] }}"
@@ -12,20 +14,27 @@
   when: mode == "pre"
   run_once: true
 
-- name: Allow Haproxy To Bind On Port haproxy stats port
+- name: Allow Haproxy To Bind On LB Redis Port
   seport:
-    ports="{{ haproxy_stats_port }}"
+    ports="{{ lb_redis_port }}"
     proto="tcp"
     setype="http_port_t"
     state="present"
   tags: "lb"
   when: mode == "pre"
 
-- name: Allow Haproxy To Bind On Redis Port
-  seport:
-    ports="{{ redis_port }}"
-    proto="tcp"
-    setype="http_port_t"
-    state="present"
-  tags: "lb"
-  when: mode == "pre"
+- name: "Define haproxy_frontends"
+  set_fact:
+    haproxy_frontends: "{{ lb_redis_haproxy_frontends }}"
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+
+- name: "Define haproxy_backends"
+  set_fact:
+    haproxy_backends: "{{ lb_redis_haproxy_backends }}"
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+    
+  

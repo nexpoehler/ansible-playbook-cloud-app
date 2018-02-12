@@ -1,7 +1,5 @@
 ---
 
-server_role: "db"
-
 ## Settings to get Percona
 mysql_packages:
   - "Percona-Server-client-56"

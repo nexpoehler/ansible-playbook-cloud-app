@@ -15,6 +15,8 @@ nex_app_db_user: "dbuser"
 nex_app_db_name: "db"
 nex_app_build_mount_opts: "bind,ro"
 
+server_selinux_enforcing: true
+
 ## net-device vars
 eth0: eth0
 eth1: eth1
@@ -24,19 +26,23 @@ nfs_shared_path: "/shared"
 
 ## varnish vars
 varnish_port: 8080
-
+lb_varnish_port: 8081
+  
 ## http vars
 http_port: 80
 https_port: 443
 
 ## web vars
-web_port: 8081
+web_port: 8090
+lb_web_port: 8091
 
 ## FPM Vars
 php_fpm_port: 9000
+lb_php_fpm_port: 9001
 
 ## Redis Vars
 redis_port: 6379
+lb_redis_port: 6380
 
 ## HAProxy Base Vars
 haproxy_global:
@@ -71,3 +77,8 @@ haproxy_defaults:
     - "httpchk"
 
 haproxy_stats_port: 9999
+
+## Tweak sysctl so we can forward too
+server_extra_sysctl:
+  - key: "net.ipv4.ip_forward"
+    value: "1"

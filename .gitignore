@@ -3,3 +3,6 @@
 .vault
 roles
 extra-vars.yml
+.DS_Store
+.vagrant/*
+

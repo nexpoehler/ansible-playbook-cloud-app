@@ -1,7 +1,5 @@
 ---
 
-server_role: "fpm"
-
 php_fpm_enabled: true
 php_fpm_pools:
   - name: "{{ nex_project }}"

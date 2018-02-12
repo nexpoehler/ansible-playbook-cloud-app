@@ -1,11 +1,9 @@
 ---
 
-server_role: "varnish"
-
 varnish_listen_address: "{{ backnet_addr }}"
 varnish_listen_port: "{{ varnish_port }}"
 varnish_default_backend_host: "{{ lb_web_backnet_addrs[0] }}"
-varnish_default_backend_port: "{{ web_port }}"
+varnish_default_backend_port: "{{ lb_web_port }}"
 
 ## Firewall
 firewall_v4_group_rules:

@@ -1,7 +1,5 @@
 ---
 
-server_role: "redis"
-
 redis_bind: "{{ backnet_addr }}"
 
 firewall_v4_group_rules:

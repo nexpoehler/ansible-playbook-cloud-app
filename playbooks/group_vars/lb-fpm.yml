@@ -1,27 +1,20 @@
 ---
 
-server_role: "lb-fpm"
-
 ## HAProxy Vars
-haproxy_frontends:
+lb_fpm_haproxy_frontends:
   - name: "fe-fpm"
     bind:
-      - "{{ backnet_addr }}:{{ php_fpm_port }}"
+      - "{{ backnet_addr }}:{{ lb_php_fpm_port }}"
     default_backend: "be-fpm"
 
-haproxy_backends:
+lb_fpm_haproxy_backends:
   - name: "be-fpm"
     servers: "{{ haproxy_fpm_servers }}"
-
-## Tweak sysctl so we can forward too
-server_extra_sysctl:
-  - key: "net.ipv4.ip_forward"
-    value: "1"
 
 ## Firewall
 firewall_v4_group_rules:
   401 allow backnet fpm traffic:
-    - "-A INPUT -p tcp --dport {{ php_fpm_port }} -j ACCEPT -s {{ web_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
+    - "-A INPUT -p tcp --dport {{ lb_php_fpm_port }} -j ACCEPT -s {{ web_backnet_addrs | join(',') }} -d {{ backnet_addr }}"
   402 allow local stats traffic:
     - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s 127.0.0.1 -d {{ backnet_addr }}"
     - "-A INPUT -p tcp --dport {{ haproxy_stats_port }} -j ACCEPT -s {{ backnet_addr }} -d {{ backnet_addr }}"

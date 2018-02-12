@@ -1,8 +1,10 @@
 ---
 
-- include: tasks/user.yml
-  when: mode == "pre"
-
+- include: user.yml
+  when:
+    - mode == "pre"
+    - nex_env_target != "vagrant"
+    
 - name: Make Sure php-fpm is Started
   service:
     name="{{ php_prefix }}-php-fpm"
@@ -21,4 +23,5 @@
     state="mounted"
   when:
     - mode == "post"
-    - nex_env_target is undefined or nex_env_target != 'vagrant'
+    - nex_env_target != "vagrant"
+

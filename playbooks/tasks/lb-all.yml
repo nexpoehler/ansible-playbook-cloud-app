@@ -1,5 +1,14 @@
 ---
 
+- name: Allow Haproxy To Bind On Port haproxy stats port
+  seport:
+    ports="{{ haproxy_stats_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  tags: "lb"
+  when: mode == "pre"
+
 - name: Ensure Haproxy Chroot Dev Dir Exists
   file:
     name="{{ haproxy_global.chroot }}/dev"

@@ -6,6 +6,11 @@
     state="enforcing"
   when: mode == "pre"
 
+- name: Install policycoreutils-python
+  package:
+    name="policycoreutils-python"
+    state="present"
+
 - name: Setup secontext for build base
   sefcontext:
     target="{{ nex_app_build_base }}(/.*)?"
@@ -13,7 +18,7 @@
     state="present"
   when: 
     - mode == "pre"
-    - server_role == "fpm" or server_role == "web" or server_role == "fs"
+    - "'fpm' in group_names or 'web' in group_names or 'fs' in group_names"
 
 - name: Collect All Backnets By Group
   set_fact: {"{{ item | regex_replace('-', '_') }}_backnet_addrs":"{{ groups[item] | map('extract', hostvars, ['backnet_addr']) | list }}"}

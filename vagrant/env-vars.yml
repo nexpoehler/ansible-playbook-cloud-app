@@ -1,0 +1,41 @@
+# The Nexcess Application Ansible Role to be Deployed
+nex_app: nexcess.magento2
+
+# The Application Domain Name to Associate with this Environment
+nex_app_domain: example.nexcess.net
+
+fs_backnet_addrs:
+  - 127.0.0.100
+
+web_backnet_addrs:
+  - 127.0.0.100
+
+fpm_backnet_addrs:
+  - 127.0.0.100
+
+db_backnet_addrs:
+  - 127.0.0.100
+
+lb_web_backnet_addrs:
+  - 127.0.0.100
+
+lb_fpm_backnet_addrs:
+  - 127.0.0.100
+
+lb_redis_backnet_addrs:
+  - 127.0.0.100
+
+redis_backnet_addrs:
+  - 127.0.0.100
+
+lb_external_backnet_addrs:
+  - 127.0.0.100
+
+lb_varnish_backnet_addrs:
+  - 127.0.0.100
+
+varnish_backnet_addrs:
+  - 127.0.0.100
+  
+firewall_v4_default_rules: {}
+firewall_v4_group_rules: {}

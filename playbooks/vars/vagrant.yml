@@ -1,0 +1,6 @@
+---
+# removing mod_ssl since we don't use it and it puts httpd in the way on port 443 otherwise
+apache_packages:
+  - httpd
+  - httpd-devel
+  - openssh

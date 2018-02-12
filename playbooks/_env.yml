@@ -9,29 +9,34 @@
     - include: tasks/{{ item }}.yml mode="pre"
       with_items: "{{ group_names }}"
       static: no
+      when: nex_env_target != 'vagrant'
+    - include: tasks/vagrant.yml mode="pre"
+      when: nex_env_target == 'vagrant'
+    - include_vars: vagrant.yml
+      when: nex_env_target == 'vagrant'
 
   roles:
     - { role: nexcess.server, tags: ["server"] }
 
-    - { role: nexcess.apache, when: server_role == "web", tags: ["web"] }
-    - { role: nexcess.nfs,    when: server_role == "web" or server_role == "fpm", tags: ["web"] }
+    - { role: nexcess.apache, when: "'web' in group_names", tags: ["web"] }
+    - { role: nexcess.nfs,    when: "'web' in group_names or 'fpm' in group_names", tags: ["web"] }
 
-    - { role: nexcess.repo-percona, when: server_role == "db", tags: ["db"] }
-    - { role: nexcess.mysql,        when: server_role == "db", tags: ["db"] }
+    - { role: nexcess.repo-percona, when: "'db' in group_names", tags: ["db"] }
+    - { role: nexcess.mysql,        when: "'db' in group_names", tags: ["db"] }
 
-    - { role: nexcess.php,      when: server_role == "fpm" or server_role == "fs", tags: ["fpm"] }
-    - { role: nexcess.composer, when: server_role == "fpm" or server_role == "fs", tags: ["fpm"] }
+    - { role: nexcess.php,      when: "'fpm' in group_names or 'fs' in group_names", tags: ["fpm"] }
+    - { role: nexcess.composer, when: "'fpm' in group_names or 'fs' in group_names", tags: ["fpm"] }
 
-    - { role: nexcess.varnish, when: server_role == "varnish", tags: ["varnish"] }
+    - { role: nexcess.varnish, when: "'varnish' in group_names", tags: ["varnish"] }
 
-    - { role: nexcess.redis, when: server_role == "redis", tags: ["redis"] }
+    - { role: nexcess.redis, when: "'redis' in group_names", tags: ["redis"] }
 
-    - { role: nexcess.ssl-cert, when: server_role == "lb-external", tags: ["lb"] }
-    - { role: nexcess.haproxy,  when: server_role == "lb-external" or server_role == "lb-fpm" or server_role == "lb-redis" or server_role == "lb-varnish" or server_role == "lb-web", tags: ["lb"] }
+    - { role: nexcess.ssl-cert, when: "'lb-external' in group_names", tags: ["lb"] }
+    - { role: nexcess.haproxy,  when: "'lb-external' in group_names or 'lb-fpm' in group_names or 'lb-redis' in group_names or 'lb-varnish' in group_names or 'lb-web' in group_names", tags: ["lb"] }
 
     - { role: "{{ nex_app }}", mode: "env" }
 
-    - { role: nexcess.puppet, when: "nex_env_target is undefined or nex_env_target != 'vagrant'" }
+    - { role: nexcess.puppet, when: "nex_env_target != 'vagrant'" }
     
   post_tasks:
     - include: tasks/{{ item }}.yml mode="post"

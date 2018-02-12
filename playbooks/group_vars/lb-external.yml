@@ -1,7 +1,5 @@
 ---
 
-server_role: "lb-external"
-
 ssl_crt: |
   -----BEGIN CERTIFICATE-----
   MIIDtjCCAp4CCQDDmN1omiEJsTANBgkqhkiG9w0BAQsFADCBnDELMAkGA1UEBhMC
@@ -56,7 +54,7 @@ ssl_key: |
   -----END RSA PRIVATE KEY-----
 
 ## HAProxy Vars
-haproxy_global:
+lb_ext_haproxy_global:
   log:
     - address: "/dev/log"
       facility: "local0"
@@ -74,7 +72,7 @@ haproxy_global:
     ssl:
       default-dh-param: 4096
 
-haproxy_frontends:
+lb_ext_haproxy_frontends:
   - name: "fe-ext-http"
     mode: "http"
     bind:
@@ -90,17 +88,12 @@ haproxy_frontends:
       - "X-Forwarded-Proto:\\ https"
     default_backend: "be-ext"
 
-haproxy_backends:
+lb_ext_haproxy_backends:
   - name: "be-ext"
     mode: "http"
     servers: "{{ haproxy_external_servers }}"
     options:
       - "forwardfor"
-
-## Tweak sysctl so we can forward too
-server_extra_sysctl:
-  - key: "net.ipv4.ip_forward"
-    value: 1
 
 ## Firewall
 firewall_v4_group_rules:
