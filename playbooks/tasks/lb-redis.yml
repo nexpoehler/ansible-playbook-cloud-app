@@ -23,6 +23,15 @@
   tags: "lb"
   when: mode == "pre"
 
+- name: Allow Haproxy To Connect On Redis Port
+  seport:
+    ports="{{ redis_port }}"
+    proto="tcp"
+    setype="http_port_t"
+    state="present"
+  tags: "lb"
+  when: mode == "pre"
+
 - name: "Define haproxy_frontends"
   set_fact:
     haproxy_frontends: "{{ lb_redis_haproxy_frontends }}"
